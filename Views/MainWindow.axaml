@@ -1,0 +1,248 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="440"
+        x:Class="DownloadHDAvalonia.Views.MainWindow"
+        Title="{Tr 'Download - HD'}"
+        Width="800"
+        Height="440"
+        WindowStartupLocation="CenterScreen">
+    
+    <ScrollViewer x:Name="scrollViewerApp" Margin="10">
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <!-- Row 0: Código da coleção -->
+            <StackPanel Grid.Row="0" Margin="2">
+                <TextBlock Text="{Tr 'Código da coleção:'}" Margin="0,0,0,4" />
+                <TextBox
+                    x:Name="textBlockClassCode"
+                    Height="45"
+                    Margin="4"
+                    Padding="10,6"
+                    VerticalContentAlignment="Center"
+                    FontSize="14"
+                    Text="{Binding ClassCode, Mode=TwoWay}"
+                    IsEnabled="{Binding IsClassCodeEnabled}" />
+                <TextBlock 
+                    x:Name="statusClassCode"
+                    Text="{Binding StatusClassCodeText}"
+                    IsVisible="{Binding IsStatusClassCodeVisible}"
+                    Foreground="Orange"
+                    Margin="4,2" />
+            </StackPanel>
+            
+            <!-- Row 1: Filtro de caminho -->
+            <StackPanel
+                x:Name="formContainerFilter"
+                Grid.Row="1"
+                Margin="2">
+                <TextBlock Text="{Tr 'Baixar apenas fotos que contenham o seguinte texto:'}" Margin="0,0,0,4" />
+                <TextBox
+                    x:Name="textBoxPathFilter"
+                    Height="45"
+                    Margin="4"
+                    Padding="10,6"
+                    VerticalContentAlignment="Center"
+                    FontSize="14"
+                    Text="{Binding PathFilter, Mode=TwoWay}"
+                    IsEnabled="{Binding IsPathFilterEnabled}" />
+            </StackPanel>
+            
+            <!-- Row 2: Pasta de download -->
+            <StackPanel
+                Name="formContainerPath"
+                Grid.Row="2"
+                Margin="2">
+                <TextBlock Text="{Tr 'Localização da pasta para download:'}" Margin="0,0,0,4" />
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBox
+                        Grid.Column="0"
+                        x:Name="textBoxFolderPath"
+                        Height="45"
+                        Margin="4,4,4,4"
+                        Padding="10,6"
+                        VerticalContentAlignment="Center"
+                        FontSize="14"
+                        Text="{Binding FolderPath, Mode=TwoWay}"
+                        IsEnabled="{Binding IsFolderPathEnabled}" />
+                    <Button
+                        Grid.Column="1"
+                        Content="..."
+                        Width="40"
+                        Height="45"
+                        Margin="0,4,4,4"
+                        HorizontalContentAlignment="Center"
+                        Click="OpenFolderDialog_Click"
+                        Cursor="Hand"
+                        IsEnabled="{Binding IsFolderPathEnabled}" />
+                </Grid>
+                <TextBlock
+                    Name="labelValidateFolderPath"
+                    Margin="4,2"
+                    Foreground="Red"
+                    Text="{Tr 'A pasta não existe, verifique.'}"
+                    IsVisible="{Binding !IsFolderPathValid}" />
+            </StackPanel>
+            
+            <!-- Row 3: Checkboxes -->
+            <StackPanel
+                Grid.Row="3"
+                Margin="2"
+                Orientation="Vertical">
+                <!-- Checkbox Auto Treatment -->
+                <StackPanel 
+                    Orientation="Horizontal" 
+                    IsVisible="{Binding ExistsAutoTreatment}"
+                    Margin="4,2">
+                    <CheckBox
+                        x:Name="prefersAutoTreatmentCheckBox"
+                        Margin="4"
+                        VerticalContentAlignment="Center"
+                        IsChecked="{Binding PreferAutoTreatment, Mode=TwoWay}"
+                        IsEnabled="{Binding IsPreferAutoTreatmentEnabled}">
+                        <TextBlock Text="{Tr 'Com tratamento automático'}" Margin="4,0" />
+                    </CheckBox>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="&#xE9CE;"
+                        Cursor="Help"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="14"
+                        Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                        Margin="4,0">
+                        <ToolTip.Tip>
+                            <TextBlock Text="{Tr 'Desmarcado: O sistema baixará apenas as imagens originais da sua coleção.&#x0a;Marcado: O sistema baixará apenas as imagens que passaram pelo tratamento automático da sua coleção.'}" 
+                                       TextWrapping="Wrap" />
+                        </ToolTip.Tip>
+                    </TextBlock>
+                </StackPanel>
+                
+                <!-- Checkbox Smart Compress e Fechar ao concluir na mesma linha -->
+                <Grid ColumnDefinitions="Auto, *, Auto, *" Margin="4,2" IsVisible="{Binding !IsFinishAllProcess}">
+                    <!-- Checkbox Smart Compress -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <CheckBox
+                            x:Name="cbSmartCompress"
+                            Margin="4"
+                            VerticalContentAlignment="Center"
+                            IsChecked="{Binding SmartCompress, Mode=TwoWay}"
+                            IsEnabled="{Binding !IsDownloading}">
+                            <TextBlock Text="{Tr 'Com compressão inteligente (recomendado)'}" Margin="4,0" />
+                        </CheckBox>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Text="&#xE9CE;"
+                            Cursor="Help"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="14"
+                            Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                            Margin="4,0">
+                            <ToolTip.Tip>
+                                <TextBlock Text="{Tr 'Nosso sistema utiliza compressão inteligente para otimizar o espaço ocupado pelas imagens no disco, convertendo-as para formatos mais eficientes.&#x0a;Essa redução é feita sem comprometer a qualidade visual das imagens.'}" 
+                                           TextWrapping="Wrap" />
+                            </ToolTip.Tip>
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <!-- Checkbox Fechar ao concluir -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <CheckBox
+                            Margin="4"
+                            VerticalContentAlignment="Center"
+                            IsChecked="{Binding CloseAppAfterFinish, Mode=TwoWay}"
+                            IsEnabled="{Binding !IsDownloading}">
+                            <TextBlock Text="{Tr 'Fechar ao concluir'}" VerticalAlignment="Center" Margin="2,0" />
+                        </CheckBox>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Text="&#xE9CE;"
+                            Cursor="Help"
+                            FontFamily="Segoe MDL2 Assets"
+                            FontSize="14"
+                            Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                            Margin="4,0">
+                            <ToolTip.Tip>
+                                <TextBlock Text="{Tr 'Fechar esta janela automaticamente 10 segundos após a conclusão do Download'}" 
+                                           TextWrapping="Wrap" />
+                            </ToolTip.Tip>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            
+            <!-- Row 4: Botão Iniciar Download -->
+            <StackPanel Grid.Row="4" Margin="2">
+                <Button
+                    x:Name="btStartDownload"
+                    MinWidth="130"
+                    Height="35"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    Command="{Binding StartDownloadCommand}"
+                    IsEnabled="{Binding IsStartDownloadEnabled}"
+                    Content="{Tr 'Iniciar Download'}" />
+            </StackPanel>
+            
+            <!-- Row 5: Progresso do Download -->
+            <StackPanel
+                x:Name="containerProgressDownload"
+                Grid.Row="5"
+                Margin="2"
+                IsVisible="{Binding IsProgressContainerVisible}">
+                <TextBlock
+                    Name="progressLabel"
+                    Margin="2"
+                    Text="{Binding ProgressText}"
+                    FontSize="14" />
+                <ProgressBar
+                    x:Name="progressBar"
+                    Height="20"
+                    Margin="4"
+                    Value="{Binding ProgressPercentage}"
+                    Maximum="100" />
+            </StackPanel>
+            
+            <!-- Row 6: Status do Download -->
+            <StackPanel
+                x:Name="containerStatusDownload"
+                Grid.Row="6"
+                Margin="2"
+                IsVisible="{Binding IsStatusContainerVisible}">
+                <TextBlock
+                    x:Name="msgLabelStatusDownload"
+                    Margin="6"
+                    Text="{Binding StatusDownloadMessage}" />
+                <ItemsControl ItemsSource="{Binding ErrorPhotos}" Margin="4">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="2" Foreground="Red" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            
+            <!-- Row 7: Mensagem de conclusão -->
+            <StackPanel
+                Grid.Row="7"
+                Margin="2"
+                IsVisible="{Binding IsFinishAllProcess}">
+                <TextBlock
+                    Foreground="{DynamicResource AccentFillColorDefaultBrush}"
+                    FontSize="11"
+                    Text="{Binding LabelFinishAllProcess}"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
