@@ -2,11 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="440"
+        mc:Ignorable="d" d:DesignWidth="820" d:DesignHeight="500"
         x:Class="DownloadHDAvalonia.Views.MainWindow"
         Title="{Tr 'Download - HD'}"
-        Width="800"
-        Height="440"
+        Width="820"
+        Height="500"
         WindowStartupLocation="CenterScreen">
     
     <ScrollViewer x:Name="scrollViewerApp" Margin="10">
@@ -24,7 +24,7 @@
             
             <!-- Row 0: Código da coleção -->
             <StackPanel Grid.Row="0" Margin="2">
-                <TextBlock Text="{Tr 'Código da coleção:'}" Margin="0,0,0,4" />
+                <TextBlock Text="{Tr 'Código da coleção:'}" Margin="4,0,0,4" />
                 <TextBox
                     x:Name="textBlockClassCode"
                     Height="45"
@@ -47,7 +47,7 @@
                 x:Name="formContainerFilter"
                 Grid.Row="1"
                 Margin="2">
-                <TextBlock Text="{Tr 'Baixar apenas fotos que contenham o seguinte texto:'}" Margin="0,0,0,4" />
+                <TextBlock Text="{Tr 'Baixar apenas fotos que contenham o seguinte texto:'}" Margin="4,0,0,4" />
                 <TextBox
                     x:Name="textBoxPathFilter"
                     Height="45"
@@ -64,7 +64,7 @@
                 Name="formContainerPath"
                 Grid.Row="2"
                 Margin="2">
-                <TextBlock Text="{Tr 'Localização da pasta para download:'}" Margin="0,0,0,4" />
+                <TextBlock Text="{Tr 'Pasta de destino para salvar o download:'}" Margin="4,0,0,4" />
                 <Grid ColumnDefinitions="*, Auto">
                     <TextBox
                         Grid.Column="0"
@@ -93,6 +93,12 @@
                     Foreground="Red"
                     Text="{Tr 'A pasta não existe, verifique.'}"
                     IsVisible="{Binding !IsFolderPathValid}" />
+                <TextBlock
+                    Margin="4,2,4,0"
+                    FontSize="12"
+                    Opacity="0.85"
+                    Text="{Tr 'Informe uma pasta válida para habilitar o botão de download.'}"
+                    TextWrapping="Wrap" />
             </StackPanel>
             
             <!-- Row 3: Checkboxes -->

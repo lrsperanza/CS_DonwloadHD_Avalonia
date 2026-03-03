@@ -11,9 +11,13 @@
     "en-US": "Download only photos that contain the following text:",
     "pt-BR": "Baixar apenas fotos que contenham o seguinte texto:"
   },
-  "Localização da pasta para download:": {
-    "en-US": "Download folder location:",
-    "pt-BR": "Localização da pasta para download:"
+  "Pasta de destino para salvar o download:": {
+    "en-US": "Destination folder to save the download:",
+    "pt-BR": "Pasta que será salva o download:"
+  },
+  "Informe uma pasta válida para habilitar o botão de download.": {
+    "en-US": "Enter a valid folder path to enable the download button.",
+    "pt-BR": "Informe uma pasta válida para habilitar o botão de download."
   },
   "A pasta não existe, verifique.": {
     "en-US": "The folder does not exist, please check.",

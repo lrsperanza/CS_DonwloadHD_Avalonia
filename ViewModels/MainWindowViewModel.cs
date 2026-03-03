@@ -178,6 +178,7 @@ namespace DownloadHDAvalonia.ViewModels
                         ClassCode = pt.classCode;
                         ExistsAutoTreatment = pt.AutoTreatment ?? false;
                         IsPreferAutoTreatmentEnabled = ExistsAutoTreatment;
+                        PreferAutoTreatment = ExistsAutoTreatment;
                     }
                 }
                 catch (Exception ex)
@@ -234,6 +235,7 @@ namespace DownloadHDAvalonia.ViewModels
                 {
                     ExistsAutoTreatment = ProfessionalTask.AutoTreatment ?? false;
                     IsPreferAutoTreatmentEnabled = ExistsAutoTreatment;
+                    PreferAutoTreatment = ExistsAutoTreatment;
                 }
             }
             catch
